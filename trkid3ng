@@ -1,0 +1,100 @@
+-- Services
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local player = Players.LocalPlayer
+
+-- Anti-duplicate
+if game.CoreGui:FindFirstChild("trkid3ng_gui") then
+	game.CoreGui.trkid3ng_gui:Destroy()
+end
+
+-- ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "trkid3ng_gui"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- Frame
+local Frame = Instance.new("Frame")
+Frame.Parent = ScreenGui
+Frame.Size = UDim2.new(0, 260, 0, 330)
+Frame.Position = UDim2.new(0.05, 0, 0.5, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(120, 0, 0)
+Frame.BorderSizePixel = 0
+Frame.Active = true
+Frame.Draggable = true
+Instance.new("UICorner", Frame).CornerRadius = UDim.new(0,12)
+
+-- Title
+local Title = Instance.new("TextLabel")
+Title.Parent = Frame
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.Text = "trkid3ng gui"
+Title.BackgroundColor3 = Color3.fromRGB(160, 0, 0)
+Title.TextColor3 = Color3.fromRGB(255,255,255)
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 18
+Title.BorderSizePixel = 0
+Instance.new("UICorner", Title).CornerRadius = UDim.new(0,12)
+
+-- Aç/Kapa butonu (✅❎)
+local toggleBtn = Instance.new("TextButton")
+toggleBtn.Parent = Frame
+toggleBtn.Size = UDim2.new(0, 60, 0, 30)
+toggleBtn.Position = UDim2.new(1, -70, 0, 5)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(50,50,50)
+toggleBtn.TextColor3 = Color3.fromRGB(255,255,255)
+toggleBtn.Font = Enum.Font.SourceSansBold
+toggleBtn.TextSize = 18
+toggleBtn.Text = "✅"
+toggleBtn.BorderSizePixel = 0
+Instance.new("UICorner", toggleBtn).CornerRadius = UDim.new(0,6)
+
+-- Button creator
+local function button(txt, y, func)
+	local b = Instance.new("TextButton", Frame)
+	b.Size = UDim2.new(0,220,0,40)
+	b.Position = UDim2.new(0,20,0,y)
+	b.Text = txt
+	b.BackgroundColor3 = Color3.fromRGB(180,0,0)
+	b.TextColor3 = Color3.fromRGB(255,255,255)
+	b.Font = Enum.Font.SourceSansBold
+	b.TextSize = 16
+	b.BorderSizePixel = 0
+	Instance.new("UICorner", b).CornerRadius = UDim.new(0,8)
+	b.MouseButton1Click:Connect(func)
+end
+
+-- Buttons
+button("Infinite Yield", 60, function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+end)
+
+button("Fly V3", 110, function()
+	loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Fly-v3-64434"))()
+end)
+
+button("R15 to R6", 160, function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/9BFcHqfK"))("Copyright SHON ECCS Co")
+end)
+
+button("Invisibility", 210, function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/3Rnd9rHf"))()
+end)
+
+button("Touch Fling", 260, function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/LgZwZ7ZB", true))()
+end)
+
+-- Animasyonlu aç/kapa
+local openPos = Frame.Position
+local closedPos = UDim2.new(openPos.X.Scale, openPos.X.Offset, openPos.Y.Scale, openPos.Y.Offset + 400)
+local isOpen = true
+local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+toggleBtn.MouseButton1Click:Connect(function()
+	local tween = TweenService:Create(Frame, tweenInfo, {Position = isOpen and closedPos or openPos})
+	tween:Play()
+	isOpen = not isOpen
+	toggleBtn.Text = isOpen and "✅" or "❎"
+end)
